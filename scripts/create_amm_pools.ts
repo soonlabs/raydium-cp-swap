@@ -1,7 +1,6 @@
 import * as fs from "fs";
-import * as anchor from "@coral-xyz/anchor";
-import { RaydiumCpSwap } from "./utils/idl";
-import { Keypair, Connection, PublicKey } from "@solana/web3.js";
+import { IDL, RaydiumCpSwap } from "./utils/idl";
+import { Keypair, Connection } from "@solana/web3.js";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { createMint, getOrCreateAssociatedTokenAccount, mintTo } from "@solana/spl-token";
 import {BN, Program} from "@coral-xyz/anchor";
@@ -12,7 +11,7 @@ const payerKeypair = Keypair.fromSecretKey(
   Buffer.from(JSON.parse(fs.readFileSync("./owner.json", "utf-8")))
 );
 const connection = new Connection("http://127.0.0.1:8899/rpc", "finalized");
-const program = anchor.workspace.RaydiumCpSwap as Program<RaydiumCpSwap>;
+const program = new Program(IDL) as Program<RaydiumCpSwap>;
 const poolsFile = "pool_ids.json";
 const tokenMintsFile = "token_mints.json";
 const token0Amount = 1_000_000_000_000_000;
