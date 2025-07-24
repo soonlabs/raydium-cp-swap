@@ -49,3 +49,9 @@ cd raydium-cp-swap && yarn && anchor test
 ## License
 
 Raydium constant product swap is licensed under the Apache License, Version 2.0.
+
+## Deployment
+
+```shell
+solana program deploy -u http://localhost:8899 -k owner.json --program-id raydium_cp_swap-keypair.json target/deploy/raydium_cp_swap.so
+```
