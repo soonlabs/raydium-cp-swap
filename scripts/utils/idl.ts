@@ -689,6 +689,7 @@ export type RaydiumCpSwap = {
                     name: 'createPoolFee'
                     docs: ['create pool fee account']
                     address: 'GzqQwxPSmUZnTyCfX9YWqi32MJg43ujP786ZoacL559Y'
+                    writable: true
                 },
                 {
                     name: 'observationState'
@@ -2206,6 +2207,7 @@ export const IDL: RaydiumCpSwap = {
                     name: 'createPoolFee',
                     docs: ['create pool fee account'],
                     address: 'GzqQwxPSmUZnTyCfX9YWqi32MJg43ujP786ZoacL559Y',
+                    writable: true
                 },
                 {
                     name: 'observationState',
