@@ -57,7 +57,7 @@ async function createTokenAndMint(amount: number) {
     program,
     connection,
     payerKeypair,
-    1, // config_index
+    2, // config_index
     new BN(10), // tradeFeeRate
     new BN(1000), // protocolFeeRate
     new BN(25000), // fundFeeRate
