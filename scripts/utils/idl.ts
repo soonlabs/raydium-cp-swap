@@ -310,7 +310,7 @@ export type RaydiumCpSwap = {
             ]
         },
         {
-            "name": "create_amm_config",
+            "name": "createAmmConfig",
             "docs": [
                 "# Arguments",
                 "",
@@ -2426,7 +2426,7 @@ export const IDL: RaydiumCpSwap = {
             ]
         },
         {
-            "name": "create_amm_config",
+            "name": "createAmmConfig",
             "docs": [
                 "# Arguments",
                 "",

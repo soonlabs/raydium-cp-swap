@@ -45,7 +45,7 @@ export async function createAmmConfig(
   }
 
   const ix = await program.methods
-    .create_amm_config(
+    .createAmmConfig(
       config_index,
       tradeFeeRate,
       protocolFeeRate,
