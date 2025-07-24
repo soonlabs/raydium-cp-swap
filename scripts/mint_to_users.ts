@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import bs58 from "bs58";
 import { Keypair, Connection, PublicKey } from "@solana/web3.js";
-import { getOrCreateAssociatedTokenAccount, mintTo } from "@solana/spl-token";
+import {getOrCreateAssociatedTokenAccount, mintTo} from "@solana/spl-token";
 
 const users_num = 300;
 const connection = new Connection("http://127.0.0.1/rpc", "finalized");
@@ -11,6 +11,7 @@ const payerKeypair = Keypair.fromSecretKey(
 const tokenMintsFile = "token_mints.json";
 const usersFile = "users.json";
 const mintAmount = 1_000_000_000_000_000;
+const feeLamports = 1_000_000_000;
 
 (async () => {
   const tokenMintsRaw = fs.readFileSync(tokenMintsFile).toString();
@@ -26,10 +27,15 @@ const mintAmount = 1_000_000_000_000_000;
   fs.writeFileSync(usersFile, JSON.stringify(users), { encoding: "utf-8" });
   console.log(`Generated ${users_num} users and saved to ${usersFile}`);
 
-  for (let i = 0; i < tokenMints.length; i++) {
-    const mint = new PublicKey(tokenMints[i]);
-    for (let j = 0; j < users_num; j++) {
-      const user = userKeypairs[j];
+  for (let j = 0; j < users_num; j++) {
+    const user = userKeypairs[j];
+
+    console.log(`Request ${feeLamports} lamports to user ${j+1}/${users_num}`);
+    await connection.requestAirdrop(user.publicKey, feeLamports);
+
+    for (let i = 0; i < tokenMints.length; i++) {
+      const mint = new PublicKey(tokenMints[i]);
+
       console.log(`Minting tokens to user ${j+1}/${users_num} for mint ${i+1}/${tokenMints.length}`);
       const ata = await getOrCreateAssociatedTokenAccount(
           connection,
