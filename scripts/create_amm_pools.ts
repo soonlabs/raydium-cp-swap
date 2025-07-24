@@ -3,7 +3,7 @@ import { IDL, RaydiumCpSwap } from "./utils/idl";
 import { Keypair, Connection } from "@solana/web3.js";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { createMint, getOrCreateAssociatedTokenAccount, mintTo } from "@solana/spl-token";
-import {BN, Program, Wallet} from "@coral-xyz/anchor";
+import {AnchorProvider, BN, Program, Wallet} from "@coral-xyz/anchor";
 import {createAmmConfig, initialize} from "./utils";
 
 const pool_num = 300;
@@ -11,7 +11,8 @@ const payerKeypair = Keypair.fromSecretKey(
   Buffer.from(JSON.parse(fs.readFileSync("./owner.json", "utf-8")))
 );
 const connection = new Connection("http://127.0.0.1:8899/rpc", "finalized");
-const program = new Program(IDL, { connection, wallet: new Wallet(payerKeypair) }) as Program<RaydiumCpSwap>;
+const provider = new AnchorProvider(connection, new Wallet(payerKeypair))
+const program = new Program(IDL, provider) as Program<RaydiumCpSwap>;
 const poolsFile = "pool_ids.json";
 const tokenMintsFile = "token_mints.json";
 const token0Amount = 1_000_000_000_000_000;
