@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import { IDL, RaydiumCpSwap } from "./utils/idl";
-import {Keypair, Connection, PublicKey} from "@solana/web3.js";
+import {Keypair, Connection} from "@solana/web3.js";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { createMint, getOrCreateAssociatedTokenAccount, mintTo } from "@solana/spl-token";
 import {AnchorProvider, BN, Program, Wallet} from "@coral-xyz/anchor";
@@ -56,10 +56,10 @@ async function createTokenAndMint(amount: number) {
     program,
     connection,
     payerKeypair,
-    0, // config_index
-    new BN(10), // tradeFeeRate
-    new BN(1000), // protocolFeeRate
-    new BN(25000), // fundFeeRate
+    1, // config_index
+    new BN(0), // tradeFeeRate
+    new BN(0), // protocolFeeRate
+    new BN(0), // fundFeeRate
     new BN(0) // create_fee
   );
 
@@ -68,15 +68,30 @@ async function createTokenAndMint(amount: number) {
 
     const mintA = await createTokenAndMint(tokenAmount);
     const mintB = await createTokenAndMint(tokenAmount);
-    let mint0: PublicKey;
-    let mint1: PublicKey;
-    if (mintA > mintB) {
-        mint0 = mintB;
-        mint1 = mintA;
-    } else {
-        mint0 = mintA;
-        mint1 = mintB;
-    }
+    const mints = [mintA, mintB];
+    mints.sort(function (x, y) {
+        const buffer1 = x.toBuffer();
+        const buffer2 = y.toBuffer();
+
+        for (let i = 0; i < buffer1.length && i < buffer2.length; i++) {
+            if (buffer1[i] < buffer2[i]) {
+                return -1;
+            }
+            if (buffer1[i] > buffer2[i]) {
+                return 1;
+            }
+        }
+
+        if (buffer1.length < buffer2.length) {
+            return -1;
+        }
+        if (buffer1.length > buffer2.length) {
+            return 1;
+        }
+
+        return 0;
+    });
+    const [mint0, mint1] = mints;
 
     const { poolAddress } = await initialize(
         program,
