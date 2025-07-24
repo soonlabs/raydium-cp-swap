@@ -69,7 +69,7 @@ async function createTokenAndMint(amount: number) {
     let mint0 = await createTokenAndMint(tokenAmount);
     let mint1 = await createTokenAndMint(tokenAmount);
     if (mint0 > mint1) {
-      [mint0, mint1] = [mint0, mint1];
+      [mint0, mint1] = [mint1, mint0];
     }
 
     const { poolAddress } = await initialize(
