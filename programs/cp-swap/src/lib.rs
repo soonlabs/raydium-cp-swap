@@ -37,7 +37,7 @@ pub mod create_pool_fee_reveiver {
     #[cfg(feature = "devnet")]
     pub const ID: Pubkey = pubkey!("G11FKBRaAkHAKuLCgLM6K6NUc9rTjPAznRCjZifrTQe2");
     #[cfg(not(feature = "devnet"))]
-    pub const ID: Pubkey = pubkey!("DNXgeM9EiiaAbaWvwjHj9fQQLAX5ZsfHyvmYUNRAdNC8");
+    pub const ID: Pubkey = pubkey!("3oVJ11EpJxRXdmQxH99GkVeHHVbKrkPb13iQ95UnZFFp");
 }
 
 pub const AUTH_SEED: &str = "vault_and_lp_mint_auth_seed";
