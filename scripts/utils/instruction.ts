@@ -44,7 +44,7 @@ export async function createAmmConfig(
     return address;
   }
 
-  const ix = await program.methods
+  const tx = await program.methods
     .createAmmConfig(
       config_index,
       tradeFeeRate,
@@ -57,9 +57,7 @@ export async function createAmmConfig(
       amm_config: address,
       system_program: SystemProgram.programId,
     })
-    .instruction();
-
-  const tx = await sendTransaction(connection, [ix], [owner], confirmOptions);
+    .rpc(confirmOptions);
   console.log("init amm config tx: ", tx);
   return address;
 }
