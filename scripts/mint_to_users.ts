@@ -33,10 +33,8 @@ const feeLamports = 1_000_000_000;
     console.log(`Request ${feeLamports} lamports to user ${j+1}/${users_num}`);
     await connection.requestAirdrop(user.publicKey, feeLamports);
 
-    for (let i = 0; i < tokenMints.length; i++) {
-      const mint = new PublicKey(tokenMints[i]);
-
-      console.log(`Minting tokens to user ${j+1}/${users_num} for mint ${i+1}/${tokenMints.length}`);
+    const mintPromises = tokenMints.map(async (tokenMint, i) => {
+      const mint = new PublicKey(tokenMint);
       const ata = await getOrCreateAssociatedTokenAccount(
           connection,
           payerKeypair,
@@ -51,6 +49,7 @@ const feeLamports = 1_000_000_000;
           payerKeypair,
           mintAmount
       );
-    }
+    });
+    await Promise.all(mintPromises);
   }
 })();
