@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import { IDL, RaydiumCpSwap } from "./utils/idl";
-import { Keypair, Connection } from "@solana/web3.js";
+import {Keypair, Connection, PublicKey} from "@solana/web3.js";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { createMint, getOrCreateAssociatedTokenAccount, mintTo } from "@solana/spl-token";
 import {AnchorProvider, BN, Program, Wallet} from "@coral-xyz/anchor";
@@ -66,10 +66,16 @@ async function createTokenAndMint(amount: number) {
   for (let i = 0; i < pool_num; i++) {
     console.log(`Create token pair and initialize pool ${i + 1}/${pool_num}`);
 
-    let mint0 = await createTokenAndMint(tokenAmount);
-    let mint1 = await createTokenAndMint(tokenAmount);
-    if (mint0 > mint1) {
-      [mint0, mint1] = [mint1, mint0];
+    const mintA = await createTokenAndMint(tokenAmount);
+    const mintB = await createTokenAndMint(tokenAmount);
+    let mint0: PublicKey;
+    let mint1: PublicKey;
+    if (mintA > mintB) {
+        mint0 = mintB;
+        mint1 = mintA;
+    } else {
+        mint0 = mintA;
+        mint1 = mintB;
     }
 
     const { poolAddress } = await initialize(
