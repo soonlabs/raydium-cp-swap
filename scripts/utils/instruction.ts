@@ -128,7 +128,7 @@ export async function initialize(
     .accounts({
       creator: creator.publicKey,
       amm_config: configAddress,
-      authority: auth,
+      // authority: auth,
       pool_state: poolAddress,
       token_0_mint: token0,
       token_1_mint: token1,
