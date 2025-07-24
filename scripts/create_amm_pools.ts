@@ -7,8 +7,8 @@ const pool_num = 300;
 const payerKeypair = Keypair.fromSecretKey(
   Buffer.from(JSON.parse(fs.readFileSync("./owner.json", "utf-8")))
 );
-const connection = new Connection("http://127.0.0.1/rpc", "finalized");
-const programId = new PublicKey("GQ1ZpPi4G3s9DMoTnkbK5X5759yZnSC4uP3Mi1PiDqmN");
+const connection = new Connection("http://127.0.0.1:8899/rpc", "finalized");
+const programId = new PublicKey("EF79cEKm4WHdFkg8aUXgXgGCBeM71hCDRP4C4TZ4vG26");
 const poolsFile = "pool_ids.json";
 const tokenMintsFile = "token_mints.json";
 const clientBin = "./target/release/client";
