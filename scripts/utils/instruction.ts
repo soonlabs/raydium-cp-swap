@@ -125,26 +125,26 @@ export async function initialize(
   );
   await program.methods
     .initialize(initAmount.initAmount0, initAmount.initAmount1, new BN(0))
-    .accounts({
+    .accountsPartial({
       creator: creator.publicKey,
       amm_config: configAddress,
-      authority: auth,
+      // authority: auth,
       pool_state: poolAddress,
       token_0_mint: token0,
       token_1_mint: token1,
-      lp_mint: lpMintAddress,
+      // lp_mint: lpMintAddress,
       creator_token_0: creatorToken0,
       creator_token_1: creatorToken1,
-      creator_lp_token: creatorLpTokenAddress,
-      token_0_vault: vault0,
-      token_1_vault: vault1,
-      create_pool_fee: createPoolFee,
-      observation_state: observationAddress,
-      token_program: TOKEN_PROGRAM_ID,
+      // creator_lp_token: creatorLpTokenAddress,
+      // token_0_vault: vault0,
+      // token_1_vault: vault1,
+      // create_pool_fee: createPoolFee,
+        // observation_state: observationAddress,
+      // token_program: TOKEN_PROGRAM_ID,
       token_0_program: token0Program,
       token_1_program: token1Program,
-      system_program: SystemProgram.programId,
-      rent: SYSVAR_RENT_PUBKEY,
+      // system_program: SystemProgram.programId,
+      // rent: SYSVAR_RENT_PUBKEY,
     })
     .rpc(confirmOptions);
   const poolState = await program.account.PoolState.fetch(poolAddress);
