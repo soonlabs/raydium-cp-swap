@@ -15,8 +15,7 @@ const provider = new AnchorProvider(connection, new Wallet(payerKeypair))
 const program = new Program(IDL, provider) as Program<RaydiumCpSwap>;
 const poolsFile = "pool_ids.json";
 const tokenMintsFile = "token_mints.json";
-const token0Amount = 1_000_000_000_000_000;
-const token1Amount = 1_000_000_000_000_000;
+const tokenAmount = 1_000_000_000_000_000;
 
 async function createTokenAndMint(amount: number) {
   const mintKeypair = Keypair.generate();
@@ -67,8 +66,11 @@ async function createTokenAndMint(amount: number) {
   for (let i = 0; i < pool_num; i++) {
     console.log(`Create token pair and initialize pool ${i + 1}/${pool_num}`);
 
-    const mint0 = await createTokenAndMint(token0Amount);
-    const mint1 = await createTokenAndMint(token1Amount);
+    let mint0 = await createTokenAndMint(tokenAmount);
+    let mint1 = await createTokenAndMint(tokenAmount);
+    if (mint0 > mint1) {
+      [mint0, mint1] = [mint0, mint1];
+    }
 
     const { poolAddress } = await initialize(
         program,
