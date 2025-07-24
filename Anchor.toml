@@ -12,7 +12,6 @@ skip-lint = false
 [programs.Localnet]
 raydium_cp_swap = "CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C"
 
-
 [registry]
 url = "https://github.com/raydium-io/raydium-cp-swap"
 

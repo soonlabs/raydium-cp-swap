@@ -1,22 +1,24 @@
-import { execSync } from "child_process";
 import * as fs from "fs";
+import * as anchor from "@coral-xyz/anchor";
+import { RaydiumCpSwap } from "./utils/idl";
 import { Keypair, Connection, PublicKey } from "@solana/web3.js";
+import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { createMint, getOrCreateAssociatedTokenAccount, mintTo } from "@solana/spl-token";
+import {BN, Program} from "@coral-xyz/anchor";
+import {createAmmConfig, initialize} from "./utils";
 
 const pool_num = 300;
 const payerKeypair = Keypair.fromSecretKey(
   Buffer.from(JSON.parse(fs.readFileSync("./owner.json", "utf-8")))
 );
 const connection = new Connection("http://127.0.0.1:8899/rpc", "finalized");
-const programId = new PublicKey("EF79cEKm4WHdFkg8aUXgXgGCBeM71hCDRP4C4TZ4vG26");
+const program = anchor.workspace.RaydiumCpSwap as Program<RaydiumCpSwap>;
 const poolsFile = "pool_ids.json";
 const tokenMintsFile = "token_mints.json";
-const clientBin = "./target/release/client";
-const openTime = 0;
 const token0Amount = 1_000_000_000_000_000;
 const token1Amount = 1_000_000_000_000_000;
 
-async function createTokenAndMint(amount: number): Promise<{ mint: string; ata: string }> {
+async function createTokenAndMint(amount: number) {
   const mintKeypair = Keypair.generate();
   const mint = await createMint(
     connection,
@@ -42,7 +44,7 @@ async function createTokenAndMint(amount: number): Promise<{ mint: string; ata: 
     payerKeypair,
     amount
   );
-  return { mint: mint.toBase58(), ata: ata.address.toBase58() };
+  return mint;
 }
 
 
@@ -50,40 +52,39 @@ async function createTokenAndMint(amount: number): Promise<{ mint: string; ata: 
   const pool_ids: string[] = [];
   const token_mints: string[] = [];
 
+  // create amm config
+  const ammConfig = await createAmmConfig(
+    program,
+    connection,
+    payerKeypair,
+    0, // config_index
+    new BN(10), // tradeFeeRate
+    new BN(1000), // protocolFeeRate
+    new BN(25000), // fundFeeRate
+    new BN(0) // create_fee
+  );
+
   for (let i = 0; i < pool_num; i++) {
     console.log(`Create token pair and initialize pool ${i + 1}/${pool_num}`);
 
-    const tokenA = await createTokenAndMint(token0Amount);
-    const tokenB = await createTokenAndMint(token1Amount);
-    
-    let [mint0, mint1] = [tokenA.mint, tokenB.mint];
-    token_mints.push(mint0, mint1);
-    if (mint0 > mint1) [mint0, mint1] = [mint1, mint0];
+    const mint0 = await createTokenAndMint(token0Amount);
+    const mint1 = await createTokenAndMint(token1Amount);
 
-    const cmd = `${clientBin} initialize-pool ${mint0} ${mint1} ${token0Amount} ${token1Amount} --open-time ${openTime}`;
-    let output: string;
-    try {
-      output = execSync(cmd, { encoding: "utf-8" });
-    } catch (e: any) {
-      output = e.stdout || e.message;
-    }
-    console.log(output);
-
-    const AMM_CONFIG_SEED = "amm_config"; 
-    const [ammConfigPda] = PublicKey.findProgramAddressSync(
-        [Buffer.from(AMM_CONFIG_SEED), Buffer.from(Uint16Array.of(0).buffer)],
-        programId
-    );
-    const [poolId] = PublicKey.findProgramAddressSync(
-        [
-            Buffer.from("pool"),
-            ammConfigPda.toBuffer(),
-            new PublicKey(mint0).toBuffer(),
-            new PublicKey(mint1).toBuffer()
-        ],
-        programId
-    );
-    pool_ids.push(poolId.toString());
+    const { poolAddress } = await initialize(
+        program,
+        payerKeypair,
+        ammConfig,
+        mint0,
+        TOKEN_PROGRAM_ID,
+        mint1,
+        TOKEN_PROGRAM_ID,
+        { skipPreflight: false, commitment: "finalized" },
+        {
+          initAmount0: new BN(token0Amount),
+          initAmount1: new BN(token1Amount)
+        },
+    )
+    pool_ids.push(poolAddress.toString());
   }
 
   fs.writeFileSync(poolsFile, JSON.stringify(pool_ids), { encoding: "utf-8" });
