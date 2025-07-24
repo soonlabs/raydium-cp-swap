@@ -108,6 +108,7 @@ async function createTokenAndMint(amount: number) {
         },
     );
     pool_ids.push(poolAddress.toString());
+    token_mints.push(mint0.toString(), mint1.toString());
   }
 
   fs.writeFileSync(poolsFile, JSON.stringify(pool_ids), { encoding: "utf-8" });
