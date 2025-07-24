@@ -82,8 +82,8 @@ async function createTokenAndMint(amount: number) {
         TOKEN_PROGRAM_ID,
         { skipPreflight: false, commitment: "finalized" },
         {
-          initAmount0: new BN(token0Amount),
-          initAmount1: new BN(token1Amount)
+          initAmount0: new BN(tokenAmount),
+          initAmount1: new BN(tokenAmount)
         },
     );
     pool_ids.push(poolAddress.toString());
