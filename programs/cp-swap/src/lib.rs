@@ -29,7 +29,7 @@ pub mod admin {
     #[cfg(feature = "devnet")]
     pub const ID: Pubkey = pubkey!("adMCyoCgfkg7bQiJ9aBJ59H3BXLY3r5LNLfPpQfMzBe");
     #[cfg(not(feature = "devnet"))]
-    pub const ID: Pubkey = pubkey!("GThUX1Atko4tqhN2NaiTazWSeFWMuiUvfFnyJyUghFMJ");
+    pub const ID: Pubkey = pubkey!("2dYsE5r2RNbz7ZQRCEjvPeRTMVeNfdDubMEQvgkK64uH");
 }
 
 pub mod create_pool_fee_reveiver {

@@ -14,7 +14,6 @@ import {
 } from "@solana/spl-token";
 import {
   accountExist,
-  sendTransaction,
   getAmmConfigAddress,
   getAuthAddress,
   getPoolAddress,
