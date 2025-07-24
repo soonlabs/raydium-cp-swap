@@ -6,7 +6,7 @@ import { createMint, getOrCreateAssociatedTokenAccount, mintTo } from "@solana/s
 import {AnchorProvider, BN, Program, Wallet} from "@coral-xyz/anchor";
 import {createAmmConfig, initialize} from "./utils";
 
-const pool_num = 300;
+const pool_num = 200;
 const payerKeypair = Keypair.fromSecretKey(
   Buffer.from(JSON.parse(fs.readFileSync("./owner.json", "utf-8")))
 );

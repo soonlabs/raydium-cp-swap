@@ -3,7 +3,7 @@ import bs58 from "bs58";
 import { Keypair, Connection, PublicKey } from "@solana/web3.js";
 import {getOrCreateAssociatedTokenAccount, mintTo} from "@solana/spl-token";
 
-const users_num = 300;
+const users_num = 200;
 const connection = new Connection("http://127.0.0.1:8899/rpc", "finalized");
 const payerKeypair = Keypair.fromSecretKey(
   Buffer.from(JSON.parse(fs.readFileSync("./owner.json", "utf-8")))
