@@ -5,7 +5,7 @@
  * IDL can be found at `./sega_cp_swap.json`.
  */
 export type RaydiumCpSwap = {
-    "address": "2dYsE5r2RNbz7ZQRCEjvPeRTMVeNfdDubMEQvgkK64uH",
+    "address": string,
     "metadata": {
         "name": "raydium_cp_swap",
         "version": "0.2.0",
@@ -2121,7 +2121,7 @@ export type RaydiumCpSwap = {
 }
 
 export const IDL: RaydiumCpSwap = {
-    "address": "2dYsE5r2RNbz7ZQRCEjvPeRTMVeNfdDubMEQvgkK64uH",
+    "address": "EF79cEKm4WHdFkg8aUXgXgGCBeM71hCDRP4C4TZ4vG26",
     "metadata": {
         "name": "raydium_cp_swap",
         "version": "0.2.0",
