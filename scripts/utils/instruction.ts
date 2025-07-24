@@ -45,7 +45,7 @@ export async function createAmmConfig(
   }
 
   const ix = await program.methods
-    .createAmmConfig(
+    .create_amm_config(
       config_index,
       tradeFeeRate,
       protocolFeeRate,
@@ -54,8 +54,8 @@ export async function createAmmConfig(
     )
     .accounts({
       owner: owner.publicKey,
-      ammConfig: address,
-      systemProgram: SystemProgram.programId,
+      amm_config: address,
+      system_program: SystemProgram.programId,
     })
     .instruction();
 
@@ -130,26 +130,26 @@ export async function initialize(
     .initialize(initAmount.initAmount0, initAmount.initAmount1, new BN(0))
     .accountsPartial({
       creator: creator.publicKey,
-      ammConfig: configAddress,
+      amm_config: configAddress,
       authority: auth,
-      poolState: poolAddress,
-      token0Mint: token0,
-      token1Mint: token1,
-      lpMint: lpMintAddress,
-      creatorToken0,
-      creatorToken1,
-      creatorLpToken: creatorLpTokenAddress,
-      token0Vault: vault0,
-      token1Vault: vault1,
-      createPoolFee,
-      observationState: observationAddress,
-      tokenProgram: TOKEN_PROGRAM_ID,
-      token0Program: token0Program,
-      token1Program: token1Program,
-      systemProgram: SystemProgram.programId,
+      pool_state: poolAddress,
+      token_0_mint: token0,
+      token_1_mint: token1,
+      lp_mint: lpMintAddress,
+      creator_token_0: creatorToken0,
+      creator_token_1: creatorToken1,
+      creator_lp_token: creatorLpTokenAddress,
+      token_0_vault: vault0,
+      token_1_vault: vault1,
+      create_pool_fee: createPoolFee,
+      observation_state: observationAddress,
+      token_program: TOKEN_PROGRAM_ID,
+      token_0_program: token0Program,
+      token_1_program: token1Program,
+      system_program: SystemProgram.programId,
       rent: SYSVAR_RENT_PUBKEY,
     })
     .rpc(confirmOptions);
-  const poolState = await program.account.poolState.fetch(poolAddress);
+  const poolState = await program.account.PoolState.fetch(poolAddress);
   return { poolAddress, poolState };
 }
