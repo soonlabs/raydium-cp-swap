@@ -6,7 +6,7 @@ import { createMint, getOrCreateAssociatedTokenAccount, mintTo } from "@solana/s
 import {AnchorProvider, BN, Program, Wallet} from "@coral-xyz/anchor";
 import {createAmmConfig, initialize} from "./utils";
 
-const pool_num = 200;
+const pool_num = 400;
 const payerKeypair = Keypair.fromSecretKey(
   Buffer.from(JSON.parse(fs.readFileSync("./owner.json", "utf-8")))
 );
@@ -56,7 +56,7 @@ async function createTokenAndMint(amount: number) {
     program,
     connection,
     payerKeypair,
-    1, // config_index
+    0, // config_index
     new BN(0), // tradeFeeRate
     new BN(0), // protocolFeeRate
     new BN(0), // fundFeeRate

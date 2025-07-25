@@ -3,7 +3,7 @@ import bs58 from "bs58";
 import { Keypair, Connection, PublicKey } from "@solana/web3.js";
 import {getOrCreateAssociatedTokenAccount, mintTo} from "@solana/spl-token";
 
-const users_num = 200;
+const users_num = 400;
 const connection = new Connection("http://127.0.0.1:8899/rpc", "finalized");
 const payerKeypair = Keypair.fromSecretKey(
   Buffer.from(JSON.parse(fs.readFileSync("./owner.json", "utf-8")))
@@ -33,6 +33,7 @@ const feeLamports = 1_000_000_000;
     console.log(`Request ${feeLamports} lamports to user ${j+1}/${users_num}`);
     await connection.requestAirdrop(user.publicKey, feeLamports);
 
+    console.log(`Minting tokens for user ${j+1}/${users_num}`);
     const mintPromises = tokenMints.map(async (tokenMint, i) => {
       const mint = new PublicKey(tokenMint);
       const ata = await getOrCreateAssociatedTokenAccount(
