@@ -10,7 +10,7 @@ const pool_num = 400;
 const payerKeypair = Keypair.fromSecretKey(
   Buffer.from(JSON.parse(fs.readFileSync("./owner.json", "utf-8")))
 );
-const connection = new Connection("http://127.0.0.1:8899/rpc", "finalized");
+const connection = new Connection("http://127.0.0.1:8899/rpc", "processed");
 const provider = new AnchorProvider(connection, new Wallet(payerKeypair))
 const program = new Program(IDL, provider) as Program<RaydiumCpSwap>;
 const poolsFile = "pool_ids.json";
@@ -69,8 +69,6 @@ async function createTokenAndMint(amount: number) {
     const mintA = await createTokenAndMint(tokenAmount);
     const mintB = await createTokenAndMint(tokenAmount);
 
-    console.log(`Created token pair: ${mintA.toString()} and ${mintB.toString()}`);
-
     const mints = [mintA, mintB];
     mints.sort(function (x, y) {
         const buffer1 = x.toBuffer();
@@ -104,7 +102,7 @@ async function createTokenAndMint(amount: number) {
         TOKEN_PROGRAM_ID,
         mint1,
         TOKEN_PROGRAM_ID,
-        { skipPreflight: false, commitment: "finalized" },
+        { skipPreflight: false, commitment: "processed" },
         {
           initAmount0: new BN(tokenAmount),
           initAmount1: new BN(tokenAmount)
