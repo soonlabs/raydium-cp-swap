@@ -11,7 +11,7 @@ const payerKeypair = Keypair.fromSecretKey(
 const tokenMintsFile = "token_mints.json";
 const usersFile = "users.json";
 const mintAmount = 1_000_000_000_000_000;
-const feeLamports = 1_000_000_000_000;
+const feeLamports = 1_000_000_000;
 
 (async () => {
   const tokenMintsRaw = fs.readFileSync(tokenMintsFile).toString();
