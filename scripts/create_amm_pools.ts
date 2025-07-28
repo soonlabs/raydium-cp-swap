@@ -68,6 +68,9 @@ async function createTokenAndMint(amount: number) {
 
     const mintA = await createTokenAndMint(tokenAmount);
     const mintB = await createTokenAndMint(tokenAmount);
+
+    console.log(`Created token pair: ${mintA.toString()} and ${mintB.toString()}`);
+
     const mints = [mintA, mintB];
     mints.sort(function (x, y) {
         const buffer1 = x.toBuffer();
